@@ -12,7 +12,7 @@ interface Product{
     thumbnail: string
 }
 
-const Home = () => {
+const Home : React.FC = () => {
 
     const[currentPage, setCurrentPage] = useState<number>(() => {
         const savedPage = localStorage.getItem('page');
@@ -24,7 +24,7 @@ const Home = () => {
         return savedProducts ? JSON.parse(savedProducts) : [];
     });
 
-    const fecthData = () : void => {
+    const fetchData = () : void => {
         const savedProducts = localStorage.getItem("data");
         if(savedProducts){
             return;
@@ -39,7 +39,7 @@ const Home = () => {
     }
 
     useEffect(() => {
-        fecthData();
+        fetchData();
     },[])
 
     useEffect(() => {
