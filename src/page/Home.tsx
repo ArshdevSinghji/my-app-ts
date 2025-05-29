@@ -25,11 +25,12 @@ const Home : React.FC = () => {
     });
 
     const fetchData = () : void => {
-        const savedProducts = localStorage.getItem("data");
-        if(savedProducts){
-            return;
-        }
-        axiosInstance.get<{products : Product[]}>('')
+        // const savedProducts = localStorage.getItem("data");
+        // if(savedProducts){
+        //     return;
+        // }
+        console.log("API CALLED!");
+        axiosInstance.get<{products : Product[]}>(`?limit=${PAGE_SIZE}&skip=${start}`)
         .then(res => {
             // console.log(res.data);
             setProducts(res.data.products);
@@ -58,16 +59,16 @@ const Home : React.FC = () => {
 
     const PAGE_SIZE : number = 10;
     const totalProducts : number = product.length;
+    const start : number =  currentPage * PAGE_SIZE;
     const total : number = Math.ceil(totalProducts / PAGE_SIZE);
-    const start : number =  currentPage * 10;
-    const end : number = start + 10;
+    // const end : number = start + PAGE_SIZE;
 
   return (
     <div>
         <h1>Products Management</h1>
         <div className="container">
             <div className="product-container">
-                {product.slice(start, end).map((item) => {
+                {product.map((item) => {
                     return <ProductCard key={item.id}
                             title = {item.title}
                             image = {item.thumbnail}
