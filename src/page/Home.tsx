@@ -14,6 +14,8 @@ interface Product{
 
 const Home : React.FC = () => {
 
+    const [totalProducts, setTotalProducts] = useState<number>(0);
+
     const[currentPage, setCurrentPage] = useState<number>(() => {
         const savedPage = localStorage.getItem('page');
         return savedPage ? Number(savedPage) : 0;
@@ -30,9 +32,9 @@ const Home : React.FC = () => {
         //     return;
         // }
         console.log("API CALLED!");
-        axiosInstance.get<{products : Product[]}>(`?limit=${PAGE_SIZE}&skip=${start}`)
+        axiosInstance.get(`?limit=${PAGE_SIZE}&skip=${start}`)
         .then(res => {
-            // console.log(res.data);
+            setTotalProducts(res.data.total);
             setProducts(res.data.products);
             localStorage.setItem("data", JSON.stringify(res.data.products));
         })
@@ -41,7 +43,7 @@ const Home : React.FC = () => {
 
     useEffect(() => {
         fetchData();
-    },[])
+    },[currentPage])
 
     useEffect(() => {
         localStorage.setItem("page", String(currentPage))
@@ -58,9 +60,9 @@ const Home : React.FC = () => {
     }
 
     const PAGE_SIZE : number = 10;
-    const totalProducts : number = product.length;
+    // let totalProducts : number | undefined;
     const start : number =  currentPage * PAGE_SIZE;
-    const total : number = Math.ceil(totalProducts / PAGE_SIZE);
+    let tProduct: number = Math.ceil(totalProducts / PAGE_SIZE);
     // const end : number = start + PAGE_SIZE;
 
   return (
@@ -82,8 +84,7 @@ const Home : React.FC = () => {
             handleNext = {handleNext}
             handlePageChange = {handlePageChange}
             currentPage = {currentPage}
-            total = {total} />
-            
+            total = {tProduct} />
     </div>
   )
 }

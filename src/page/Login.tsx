@@ -29,7 +29,7 @@ const Login = () => {
                 user?.password === data.password
             ){
                 setAuth(true);
-                navigate("/home");
+                navigate("/");
             }
             reset();
         })}>
