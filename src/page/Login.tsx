@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom"
 import { SignInSchema, type TSignInSchema } from "../services/types"
 import { useContext } from "react"
 import { AuthorizedContext } from "../context/AuthContext"
+import { useAppDispatch, useAppSelector } from "../redux/hooks"
+import { setAuth } from "../redux/auth/AuthSlice"
 
 const Login = () => {
     const navigate = useNavigate();
@@ -11,7 +13,11 @@ const Login = () => {
     const context = useContext(AuthorizedContext)
     if(!context) throw new Error("Error dealing with context");
 
-    const { user, setAuth } = context;
+    // const { user, setAuth } = context;
+
+    const user = useAppSelector(state => state.auth.user)
+    const dispatch = useAppDispatch()
+
     const{
         register,
         handleSubmit,
@@ -28,7 +34,10 @@ const Login = () => {
                 user?.email === data.email &&
                 user?.password === data.password
             ){
-                setAuth(true);
+                // setAuth(true);
+                
+                dispatch(setAuth(true))
+
                 navigate("/");
             }
             reset();

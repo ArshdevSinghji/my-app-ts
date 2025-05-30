@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { SignUpSchema, type ISignUpSchema } from "../services/types"
 import { useContext } from "react"
 import { AuthorizedContext } from "../context/AuthContext"
+import { useAppDispatch } from "../redux/hooks"
+import { setUser } from "../redux/auth/AuthSlice"
 
 const SignUp = () => {
     const navigate = useNavigate()
@@ -13,7 +15,10 @@ const SignUp = () => {
         throw new Error("Error while dealing with contexts!")
     }
 
-    const { setUser } = context;
+    // const { setUser } = context;
+
+    // const user = useAppSelector(state => state.auth.user)
+    const dispatch = useAppDispatch()
 
     const {
         register,
@@ -25,11 +30,20 @@ const SignUp = () => {
     });
 
     const onSubmit = (data : ISignUpSchema) => {
-        setUser({
+        // setUser({
+        //     username: data.username,
+        //     email: data.email,
+        //     password: data.password
+        // })
+
+        dispatch(setUser({
             username: data.username,
             email: data.email,
             password: data.password
-        })
+        }))
+
+        // console.log(user)
+
         reset();
         navigate("/login")
     }
