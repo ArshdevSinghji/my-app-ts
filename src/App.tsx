@@ -5,6 +5,7 @@ import SignUp from "./page/SignUp";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import Counter from "./components/Counter";
 import Todo from "./page/Todo";
+import Post from "./page/Post";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
       <Route element={<ProtectedRoutes />}></Route>
       <Route path="/todo" element={<Todo />} />
       <Route path="/" element={<Home />} />
+      <Route path="/posts" element={<Post />} />
     </Routes>
   );
 };
