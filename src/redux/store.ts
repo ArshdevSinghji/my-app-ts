@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import counterReducers from "./counter/counterSlice";
 import authReducers from "./auth/AuthSlice";
 import todoReducers from "./todo/todoSlice";
@@ -10,17 +10,21 @@ import { persistStore } from "redux-persist";
 const persistConfig = {
   key: "posts",
   storage,
+  whitelist: ["post"],
+  blacklist: ["counter", "auth", "todo"],
 };
 
-const persistedReducer = persistReducer(persistConfig, postReducers);
+const rootReducer = combineReducers({
+  counter: counterReducers,
+  auth: authReducers,
+  todo: todoReducers,
+  post: postReducers,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    counter: counterReducers,
-    auth: authReducers,
-    todo: todoReducers,
-    post: persistedReducer,
-  },
+  reducer: persistedReducer,
 });
 
 export const persistor = persistStore(store);
